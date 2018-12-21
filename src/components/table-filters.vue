@@ -1,21 +1,36 @@
 <template>
 	<div class="filter-layout">
-		<input type="text" name="" placeholder="Search">
+		<input type="text" name="search" placeholder="Search" :value="search" @input="synchronise($event)">
 	<el-dropdown>
 	  <el-button type="success">
-	    Sort By<i class="el-icon-arrow-down el-icon--right"></i>
+	    Sort By {{selected}}<i class="el-icon-arrow-down el-icon--right"></i>
 	  </el-button>
 	  <el-dropdown-menu slot="dropdown">
-	    <el-dropdown-item>Amount</el-dropdown-item>
-	    <el-dropdown-item>Date</el-dropdown-item>
-	    <el-dropdown-item>Name</el-dropdown-item>
+	    <el-dropdown-item v-for="(sort,$index) in sortings" :key="$index" @click.native="appointSort(sort.title)">
+	    	{{sort.title}}
+	    </el-dropdown-item>
 	  </el-dropdown-menu>
 	</el-dropdown>
 	</div>
 </template>
 <script>
 	export default{
-
+		props:['search'],
+		data:()=>{
+			return {
+				sortings:[{index:0,title:'Amount'},{index:1,title:'Date'},{index:0,title:'Name'}],
+				selected:'Default',
+			}
+		},
+		methods:{
+			synchronise(event){
+				this.$emit('update:search',event.target.value);
+			},
+			appointSort(title){
+				this.$emit('update:sortType',title);
+				this.selected = title;
+			}
+		},
 	}
 </script>
 <style lang="scss" scoped>

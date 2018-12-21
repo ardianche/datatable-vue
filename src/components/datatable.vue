@@ -1,8 +1,10 @@
 <template>
 	<div class="layout-rows">
-		<table-filters :search.sync="search"></table-filters>
+		<table-filters :search.sync="search" :sortType.sync="sortType"></table-filters>
 		<table-heading :keys="keys"></table-heading>
-		<table-row :row="rows" :keys="keys" v-for="(rows,$index) in csv_data" :key="$index"></table-row>
+		<div class="row-wrapper">
+			<table-row  :row="rows" :keys="keys" v-for="(rows,$index) in csv_data" :key="$index"></table-row>
+		</div>
 	</div>
 </template>
 <script>
@@ -19,12 +21,23 @@
 		data:()=>{
 			return{
 				search:'',
+				sortType:'',
 			}
 		},
 		computed:{
 			csv_data(){
 
-				return this.$store.state.data;
+				return this.$store.state.data.filter(item => {
+
+					if(this.sortType != ''){
+						this.startSorting(this.sortType);
+					}else {
+						return JSON.stringify(Object.values(item))
+          				.toLowerCase()
+          				.includes(this.search.toLowerCase());
+					}
+      			});
+
 			},
 			keys(){
 				return this.csv_data.reduce((b,a)=>{
@@ -32,6 +45,13 @@
 					return b;
 				},{});
 			},
+		},
+		methods:{
+			startSorting(sort){
+				if(sort == "Name") {
+
+				}
+			}
 		}
 	}
 </script>
@@ -42,5 +62,9 @@
 		height:400px;
 		width:90%;
 		margin:auto;
+		.row-wrapper{
+			overflow:scroll;
+			max-height:60%;
+		}
 	}
 </style>
