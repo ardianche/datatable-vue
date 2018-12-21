@@ -1,6 +1,6 @@
 <template>
 	<div class="layout-rows">
-		<table-filters></table-filters>
+		<table-filters :search.sync="search"></table-filters>
 		<table-heading :keys="keys"></table-heading>
 		<table-row :row="rows" :keys="keys" v-for="(rows,$index) in csv_data" :key="$index"></table-row>
 	</div>
@@ -15,6 +15,11 @@
 			TableRow,
 			TableHeading,
 			TableFilters,
+		},
+		data:()=>{
+			return{
+				search:'',
+			}
 		},
 		computed:{
 			csv_data(){

@@ -1,7 +1,7 @@
 <template>
 	<div style="display:flex;margin-bottom: 50px;width:100%">
 		<ul class="heading" :style="styleObject">
-			<li v-for="key in keys">{{key}}</li>
+			<li v-for="(key,$index) in keys" :key="$index">{{key}}</li>
 		</ul>
 	</div>
 </template>
