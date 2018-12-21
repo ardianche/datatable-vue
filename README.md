@@ -1,6 +1,6 @@
 # datatable-vue
 
-> Datatable for Vue.JS
+> Datatable dynamic component for Vue.JS
 
 ## Build Setup
 
