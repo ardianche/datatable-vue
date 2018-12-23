@@ -18,26 +18,30 @@
 			TableHeading,
 			TableFilters,
 		},
+		mounted(){
+			if(!!this.$store.state.data){
+				this.retrievedData = this.$store.state.data;
+			}	
+		},
+		watch:{
+			sortType:function(value){
+				this.retrievedData = this.startSorting(value);
+			},
+		},
 		data:()=>{
 			return{
 				search:'',
 				sortType:'',
+				retrievedData:[],
 			}
 		},
 		computed:{
 			csv_data(){
-
-				return this.$store.state.data.filter(item => {
-
-					if(this.sortType != ''){
-						this.startSorting(this.sortType);
-					}else {
-						return JSON.stringify(Object.values(item))
-          				.toLowerCase()
-          				.includes(this.search.toLowerCase());
-					}
-      			});
-
+					return this.retrievedData.filter(item => {
+							return JSON.stringify(Object.values(item))
+          						.toLowerCase()
+          						.includes(this.search.toLowerCase());
+						});
 			},
 			keys(){
 				return this.csv_data.reduce((b,a)=>{
@@ -49,7 +53,15 @@
 		methods:{
 			startSorting(sort){
 				if(sort == "Name") {
-
+					return this.retrievedData.sort((a,b)=>{
+						return a.Name.localeCompare(b.Name);
+					});
+				}
+				if(sort == "Amount"){
+					console.log('test');
+					return this.retrievedData.sort((a,b)=>{
+						return a.Amount - b.Amount;
+					});
 				}
 			}
 		}
