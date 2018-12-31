@@ -5,8 +5,23 @@
 </template>
 
 <script>
+import datas from '@/assets/csv_data.js'
+import format from 'date-fns/format';
 export default {
-  name: 'App'
+  name: 'App',
+  beforeMount(){
+    let data = [];
+    data = datas.map((item)=>{
+      return {
+        ID: item.ID,
+        Name: item.Name,
+        Description: item.Description,
+        Amount: item.Amount,
+        Date:  format(item.Date,'ddd MM, YYYY'),
+      }
+    });
+    this.$store.commit('SET_CSV_DATA',data);
+  },
 }
 </script>
 

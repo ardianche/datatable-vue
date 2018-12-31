@@ -1,6 +1,6 @@
 <template>
 	<div class="row-details" :style="styleObject">
-		<div v-for="ro in row">
+		<div v-for="(ro,$index) in row" :key="$index">
 			<span> {{ro}}</span>
 		</div>
 	</div>
