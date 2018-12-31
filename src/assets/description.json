@@ -1,0 +1,27 @@
+{
+    "first_name":"Ardian",
+    "last_name":"Ibrahimi",
+    "birthdate":"11/03/1998",
+    "gender":"Male",
+    "current_age":20,
+    "current_residence":"Kosovo",
+    "birthplace":"Kosovo",
+    "experiences":[
+        {
+            "company_name":"Hotelkey",
+            "start_date":"01/02/2018",
+            "end_date":"01/08/2018",
+            "current_workplace":false,
+            "description":"Worked as a Vue.JS developer accross three different projects"
+        },
+        {
+            "company_name":"Ipko LLC",
+            "start_date":"07/08/2018",
+            "end_date":"",
+            "current_workplace":true,
+            "description":"Working as a full stack developer. Main area of expertise: Oracle, PHP, MySQL, NodeJS"
+        }
+    ],
+    "skills":["Javascript","Typescript","Java","Spring","PHP","Oracle","Node.JS","MySql","Wordpress","HTML5","CSS3"
+                ,"Vue.JS","Angular","Git"]
+}
