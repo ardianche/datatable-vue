@@ -1,26 +1,16 @@
 <template>
   <div id="app">
     <router-view/>
+    <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 		    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 		    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
   </div>
+  
 </template>
 
 <script>
-import datas from '@/assets/csv_data.js'
-import format from 'date-fns/format';
 export default {
   name: 'App',
   beforeMount(){
-    let data = [];
-    data = datas.map((item)=>{
-      return {
-        ID: item.ID,
-        Name: item.Name,
-        Description: item.Description,
-        Amount: item.Amount,
-        Date:  format(item.Date,'ddd MM, YYYY'),
-      }
-    });
-    this.$store.commit('SET_CSV_DATA',data);
+    this.$store.dispatch('getData');
   },
 }
 </script>

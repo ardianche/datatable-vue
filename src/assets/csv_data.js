@@ -699,6 +699,6 @@ var data = [
    "Date": "2017-07-18T08:53:37-07:00",
    "Amount": 946.99
  }
-];
+]
 
 module.exports = data;
