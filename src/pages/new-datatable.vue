@@ -7,7 +7,7 @@
                 <span>Search </span>
                 <input type="text" name="search" id="search" class="search" placeholder="Search here" v-model="searchKey">
             </div>
-            <entry-filter></entry-filter>
+            <entry-filter @filter="filterEntries" :keys="keys"></entry-filter>
         </div>
         <div class="table">
             <table id="table">
@@ -41,6 +41,9 @@
                     </span>
                 </td>
             </tr>
+            <tr v-if="sortedDatum.length == 0">
+                <h4 style="margin:auto;text-align:center;">No data available!</h4>
+            </tr>
             </tbody>
         </table>
         </div>
@@ -62,18 +65,12 @@ export default {
     },
     watch:{
         clicked:() => {
-            
-            // this.$forceUpdate();
-
-            // this.$nextTick(()=>{
-            //      this.$refs.inputField.$el.focus();
-            // });
         },
         success:function (){
             if(this.success == true){
                 setTimeout(()=>{
                     console.log('test 1111');
-                    this.SET_SUBMIT_ACTION(false);
+                    this.$store.commit('SET_SUBMIT_ACTION',false);
                 },3000);
             }
         },
@@ -95,6 +92,7 @@ export default {
             },
             editedRows:[],
             success:false,
+            filtering:false,
         }
     },
     computed:{
@@ -122,7 +120,6 @@ export default {
         }
     },
     methods:{
-        ...mapMutations(['SET_SUBMIT_ACTION']),
         sortBy(key) {
             this.sortKey = key
             this.sortKeysArray[key] = this.sortKeysArray[key] * -1;
@@ -139,7 +136,7 @@ export default {
 				this.sortedDatum = this.csv_data.filter(item => {
 							return JSON.stringify(Object.values(item))
           						.toLowerCase()
-								  .includes(this.searchKey.toLowerCase());
+								  .includes(this.searchKey.trim().toLowerCase());
                 });
 
                 return csv_data;
@@ -208,6 +205,49 @@ export default {
              this.editedRows.splice(this.editedRows.indexOf(value),1);
              this.$forceUpdate();
         },
+        filterEntries(event){
+            this.filtering = true;
+            let filteredEntries = [];
+            this.sorted_data();
+            if(event.parameter == ''){
+                return this.sorted_data();
+            }
+            this.sortedDatum = this.sortedDatum.filter((entry,index) => {
+                switch(event.condition){
+                    case 'greater' :
+                        let amount = entry[event.key];
+                        console.log('amount ',amount);
+                        if(amount > event.parameter){
+                            return true;
+                        }
+                        break;
+                    case 'equal' :
+
+                        let first_name = entry[event.key].split(' ')[0];
+                        let last_name = entry[event.key].split(' ')[1];
+
+                        let first_condition = !!first_name && first_name.toLowerCase() == event.parameter.trim().toLowerCase();
+                        let second_condition = !!last_name && last_name.toLowerCase() == event.parameter.trim().toLowerCase() 
+
+                        if(first_condition || second_condition || event.parameter == ''){
+                            return true;
+                        }
+                        break;
+                    case 'less'  :
+                        amount = entry[event.key];
+                        if(amount < event.parameter){
+                            return true;
+                        }
+                        break;
+
+                    case 'contains' : 
+                        if(entry[event.key].toLowerCase().includes(event.parameter.trim().toLowerCase()) || event.parameter == ''){
+                            return true;
+                        }
+                        break; 
+                }
+            });
+        }
     }
 }
 </script>
@@ -321,7 +361,7 @@ body {
 .search{
     max-width: 300px;
     border: 1px solid lightgray;
-    padding: 10px;
+    padding: 4px;
     border-radius: 4px;
     margin-top: 5px;
 }
