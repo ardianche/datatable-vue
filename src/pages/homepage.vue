@@ -12,7 +12,7 @@
 	</div>
 </template>
 <script>
-	import DataTable from '@/components/datatable.vue';
+	import DataTable from '../components/datatable.vue';
 	export default{
 		components:{
 			DataTable

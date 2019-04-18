@@ -53,8 +53,8 @@
     </div>
 </template>
 <script>
-import entryFilter from '@/components/entry-filter.vue';
-import entryHolder from '@/components/entry-holder.vue';
+import entryFilter from '../components/entry-filter.vue';
+import entryHolder from '../components/entry-holder.vue';
 import {mapMutations} from 'vuex';
 export default {
     components:{

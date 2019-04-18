@@ -41,11 +41,11 @@
 	</div>
 </template>
 <script>
-	import TableRow from '@/components/table-rows.vue';
-	import TableHeading from '@/components/table-heading.vue';
-	import TableFilters from '@/components/table-filters.vue';
-	import Popup from '@/components/popup.vue';
-	import Tooltip from '@/components/tooltip.vue';
+	import TableRow from '../components/table-rows.vue';
+	import TableHeading from '../components/table-heading.vue';
+	import TableFilters from '../components/table-filters.vue';
+	import Popup from '../components/popup.vue';
+	import Tooltip from '../components/tooltip.vue';
 	import {format} from 'date-fns/format';
 	export default {
 		props:['data'],
