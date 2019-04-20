@@ -4,6 +4,7 @@ import state from './state';
 import mutations from './mutations';
 import fbApp from '../main.js';
 import {format} from 'date-fns'
+import { resolve } from 'path';
 
 Vue.use(Vuex);
 
@@ -13,23 +14,24 @@ export default new Vuex.Store({
     getters: {
     },
     actions:{
-        getData({commit}){
-            console.log('this: ', this);
-            fbApp.database().ref('/').once('value').then((res)=>{
-                console.log('res : ',res.val());
-                let retrieved_data = res.val().map((item)=>{
-                    return {
-                        ID: item.ID,
-                        Name: item.Name,
-                        Description: item.Description,
-                        Amount: item.Amount,
-                        Date:  format(item.Date,'ddd MM, YYYY'),
-                        }
-                    });
-                commit('SET_CSV_DATA',retrieved_data);
-              }).catch(err=>{
-                console.log('err : ',err);
-              })
+        async getData({commit}){
+            return new Promise((resolve,reject)=>{
+                fbApp.database().ref('/').once('value').then((res)=>{
+                    let retrieved_data = res.val().map((item)=>{
+                        return {
+                            ID: item.ID,
+                            Name: item.Name,
+                            Description: item.Description,
+                            Amount: item.Amount,
+                            Date:  format(item.Date,'ddd MM, YYYY'),
+                            }
+                        });
+                    commit('SET_CSV_DATA',retrieved_data);
+                    resolve(retrieved_data);
+                  }).catch(err=>{
+                    console.log('err : ',err);
+                  })
+            })
         },
         updateEntries({commit,dispatch},payload){
             let entries_to_update = payload;

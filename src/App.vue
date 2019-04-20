@@ -12,6 +12,9 @@ export default {
   beforeMount(){
     this.$store.dispatch('getData');
   },
+  created(){
+    this.$store.dispatch('getData');
+  }
 }
 </script>
 

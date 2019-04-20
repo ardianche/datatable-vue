@@ -9,7 +9,8 @@ import {format} from 'date-fns'
 
 
 export default {
- getData() {
+  getData() {
+        return new Promise((resolve,reject)=>{
             fbApp.database().ref('/').once('value').then((res)=>{
                 let retrieved_data = res.val().map((item)=>{
                     return {
@@ -21,9 +22,11 @@ export default {
                         }
                     });
                 store.commit('SET_CSV_DATA',retrieved_data);
-                return retrieved_data;
+                resolve(retrieved_data);
               }).catch(err=>{
                 console.log('err : ',err);
+                reject(err);
               })
+        })
     }
   }

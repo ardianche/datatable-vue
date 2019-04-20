@@ -1,34 +1,57 @@
 
-import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
-import jest from 'jest';
+import { shallowMount, mount, createLocalVue , shallow} from "@vue/test-utils";
 import HelloWorld from "./src/components/HelloWorld.vue";
-import NewDataTable from "./src/pages/new-datatable.vue";
+import DataTable from "./src/pages/new-datatable.vue";
+import App from './src/App.vue';
 import Vuex from 'vuex';
 import store from './src/store/store.js'; 
 import state from './src/store/state.js';
-import actions from './src/store/actions.js';
+import store_actions from './src/store/actions.js';
 import mutations from './src/store/mutations.js';
 
-const localVue = createLocalVue()
+const localVue = createLocalVue();
 
-localVue.use(Vuex)
+localVue.config.productionTip = false;
 
-describe("HelloWorld.vue", () => {
-  it("it mounts when passed", () => {
-    const wrapper = mount(HelloWorld);
-    expect(wrapper.contains('div')).toBe(true)
+localVue.use(Vuex);
+
+describe("testing entry app.vue",()=>{
+  it("testing action getData",()=>{
+    const actions = {
+      getData: jest.fn()
+     }
+     const store = new Vuex.Store({ actions })
+     const wrapper = shallow(App, { store })
+     expect(actions.getData).toHaveBeenCalled();
   });
 });
 
-describe("testing datatable component", () => {
+describe("testing new datatable component", () => {
   it("testing getting data",()=>{
-      expect(actions.getData()).resolves;
+      expect(store_actions.getData()).resolves;
   });
   it("testing mutation SET_CSV_DATA",()=>{
-      mutations.SET_CSV_DATA(store.state,[{ID:1,Name:'Ardian'}]);
-
-      expect(state.data).toEqual(
+      store.commit('SET_CSV_DATA',[{ID:1,Name:'Ardian'}]);
+      // mutations.SET_CSV_DATA(store.state,[{ID:1,Name:'Ardian'}]);
+      expect(store.state.data).toEqual(
         [{"ID":1,"Name":'Ardian'}]
       );
   });
-})
+  it("testing computed property csv_data", async () => {
+      const mountedComponent = shallowMount(DataTable,{
+        store
+      });
+      await store.dispatch('getData');
+      expect(mountedComponent.vm.csv_data.length).toBe(100);
+      afterAll(()=>{
+        process.exit();
+      })
+  });
+  it("testing data property sortedDatum",async()=>{
+      const mountedComponent = shallowMount(DataTable,{
+        store
+      });
+      await store.dispatch('getData');
+      expect(mountedComponent.vm.sortedDatum.length).toBe(100);
+  });
+});

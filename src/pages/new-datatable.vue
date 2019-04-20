@@ -1,5 +1,5 @@
 <template>
-    <div class="table-container" v-if="!!csv_data && csv_data.length > 0"> 
+    <div id="results" class="table-container" v-if="!!csv_data && csv_data.length > 0"> 
         <h3>Datatable Beta</h3> 
         <entry-holder :entries="editedRows" @removeEntry="removeEntries" @onSubmit="editedRows = [];success=true;"></entry-holder>
         <div style="display:flex;justify-content:space-between;align-items:center">
@@ -63,6 +63,9 @@ export default {
     },
     mounted(){
     },
+    created(){
+        this.$store.dispatch('getData');
+    },
     watch:{
         clicked:() => {
         },
@@ -84,7 +87,7 @@ export default {
             sortKey:'',
             sortKeys: {},
             sortKeysArray:{},
-            sortedDatum:null,
+            sortedDatum:[],
             clicked:{
                 cell:null,
                 key:null,
@@ -96,8 +99,13 @@ export default {
         }
     },
     computed:{
-        csv_data(){
-		    return !!this.$store.state.data && this.$store.state.data || [];
+        csv_data:{
+            get:function(){
+                 return !!this.$store.state.data && this.$store.state.data || ['1','2'];
+            },
+            set:function(value){
+                this.sortedDatum = value;
+            }
 		},
         keys(){
             let reduced_keys = this.$store.state.data.reduce((b,a)=>{
@@ -110,8 +118,6 @@ export default {
                 this.sortKeysArray[key]=1;
                 this.sortedDatum = this.csv_data;
             });
-
-            console.log();
 
             return reduced_keys;
         },
