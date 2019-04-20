@@ -32,7 +32,6 @@ describe("testing new datatable component", () => {
   });
   it("testing mutation SET_CSV_DATA",()=>{
       store.commit('SET_CSV_DATA',[{ID:1,Name:'Ardian'}]);
-      // mutations.SET_CSV_DATA(store.state,[{ID:1,Name:'Ardian'}]);
       expect(store.state.data).toEqual(
         [{"ID":1,"Name":'Ardian'}]
       );
