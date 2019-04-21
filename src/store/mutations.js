@@ -5,5 +5,8 @@ export default {
     },
     SET_SUBMIT_ACTION(state,payload){
         Vue.set(state,'submit_action',payload);
+    },
+    SET_LOADING(state,payload){
+        Vue.set(state,'loading',payload);
     }
 }

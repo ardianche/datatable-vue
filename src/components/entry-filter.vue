@@ -25,8 +25,8 @@
             <span>Parameter</span>
             <input v-model="filter_object.parameter" type="text">
         </div>
-        <div>
-            <button @click="startFilter()">Filter</button>
+        <div style="align-self: flex-end;">
+            <button style="padding:4px 15px;background:transparent;border:1px solid lightgray;border-radius:4px;" @click="startFilter()">Filter</button>
         </div>
     </div>
 </template>
@@ -81,6 +81,9 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            span{
+                font-weight:600;
+            }
             input{
                 border: 1px solid lightgray;
                 padding: 4px;
@@ -90,7 +93,7 @@ export default {
                 border: 1px solid lightgray;
                 background: transparent;
                 font-size: .959em;
-
+                color:lightgray;
                 *{
                     padding:10px;
                 }

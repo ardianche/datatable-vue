@@ -1,8 +1,9 @@
 <template>
-    <div id="results" class="table-container" v-if="!!csv_data && csv_data.length > 0"> 
+<div>
+ <div id="results" class="table-container" v-if="(!!csv_data && csv_data.length > 0 ) && !loading"> 
         <h3>Datatable Beta</h3> 
         <entry-holder :entries="editedRows" @removeEntry="removeEntries" @onSubmit="editedRows = [];success=true;"></entry-holder>
-        <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
             <div style="display:flex;justify-content:center;flex-direction:column">
                 <span>Search </span>
                 <input type="text" name="search" id="search" class="search" placeholder="Search here" v-model="searchKey">
@@ -51,6 +52,11 @@
             You successfully modified the data!
         </div>
     </div>
+            <div v-if="loading" class="loader">
+            <div></div>
+            <h4>Loading</h4>
+        </div>
+</div>
 </template>
 <script>
 import entryFilter from '../components/entry-filter.vue';
@@ -123,7 +129,10 @@ export default {
         },
         submitedData(){
             return this.$store.state.submit_action;
-        }
+        },
+        loading(){
+            return this.$store.state.loading;
+        },
     },
     methods:{
         sortBy(key) {
@@ -215,6 +224,9 @@ export default {
             this.filtering = true;
             let filteredEntries = [];
             this.sorted_data();
+            if(event.parameter == null || event.key == null || event.condition == null){
+                return this.sorted_data();
+            }
             if(event.parameter == ''){
                 return this.sorted_data();
             }
@@ -384,5 +396,35 @@ body {
     right: 40px;
     bottom: 40px;
     transition: ease-in 5s;
+}
+.loader{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    div {
+        display: inline-block;
+        width: 64px;
+        height: 64px;
+    }
+    div::after {
+        content: " ";
+        display: block;
+        width: 46px;
+        height: 46px;
+        margin: 1px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        border-color:lightgray white;
+        animation: div 1.2s linear infinite;
+    }
+    @keyframes div {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 }
 </style>
